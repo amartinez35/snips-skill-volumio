@@ -22,16 +22,18 @@ class Volumio:
         self.socketIO.emit('playPlaylist', {'name': self.playlist_name})
     
     def create_playlist(self):
-        self.socketIO.emit('createPlayist', {'name': self.playlist_name})
+        self.socketIO.emit('createPlaylist', {'name': self.playlist_name})
     
     def remove_playlist(self):
         self.socketIO.emit('deletePlaylist', {'name': self.playlist_name})
     
     def set_volume(self, volume):
-        (self.socketIO.emit('mute', ''), self.socketIO.emit('volume', volume))[volume<=100 and volume>=0]
+        if volume > 0 or volume <100:
+          self.socketIO.emit('volume', volume)
     
     def add_to_playlist(self, song):
-        uri = song['uri'].decode().encode('utf-8')
+        print(song['uri'])
+        uri = song['uri']
         self.socketIO.emit('addToPlaylist', {'name': self.playlist_name, 'service': song['service'], 'uri': uri})
     
     def record_playlist(self):
