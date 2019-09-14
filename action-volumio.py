@@ -13,7 +13,6 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 slots_list = [
   'Artist',
   'Song',
-  'Album',
   'Piece',
   'VolumioAction'
 ]
@@ -41,7 +40,7 @@ def intent_received(hermes, intent_message):
       mpd = Volumio(slots_values['Piece'])
       if slots_values['VolumioAction'] == 'demarre':
         
-        for song_search in ['Song', 'Album', 'Artist']:
+        for song_search in ['Song', 'Artist']:
 
           if len(slots_values[song_search]) > 0:
             mpd.search(slots_values[song_search])
