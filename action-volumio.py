@@ -22,7 +22,7 @@ def intent_received(hermes, intent_message):
     mpd.search(artist)
     mpd.play_song()
 
-
+    hermes.publish_end_session(intent_message.session_id, 'J\'ai mis {}'.format(artist))
 
 
 with Hermes(MQTT_ADDR) as h:
