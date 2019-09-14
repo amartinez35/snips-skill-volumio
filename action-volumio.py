@@ -30,18 +30,23 @@ def intent_received(hermes, intent_message):
         slots_values[slot] = available_slots[slot].first().value
       else:
         slots_values[slot] = ''
-
-
-    if len(slots_values['VolumioAction']) == 0:
-      message = 'Je n\' pas compris la demande'
     
     if len(slots_values['Piece']) == 0:
       slots_values['Piece'] = '192.168.0.25'
 
+    if len(slots_values['VolumioAction']) == 0:
+      message = 'Je n\' pas compris la demande'
+    else:
+      mpd = Volumio(slots_values['Piece'])
+      if slots_values['VolumioAction'] == 'démarre':
+        message = 'Je lance la lecture'
+        mpd.play_song()
+
+
     
-    mpd = Volumio(slots_values['Piece'])
-    mpd.search(slots_values['Artist'])
-    mpd.play_song()
+    # mpd = Volumio(slots_values['Piece'])
+    # mpd.search(slots_values['Artist'])
+    # mpd.play_song()
 
     hermes.publish_end_session(intent_message.session_id, message)
 
