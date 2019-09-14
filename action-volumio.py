@@ -2,6 +2,7 @@
 # coding: utf-8
 
 from hermes_python.hermes import Hermes
+from Volumio import Volumio
 import requests
 
 
@@ -14,7 +15,13 @@ def intent_received(hermes, intent_message):
 
   if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action' :
     print(intent_message.slots.Artist.first().value)
+    artist = intent_message.slots.Artist.first().value
     print(intent_message.slots.VolumioAction.first().value)
+
+    mpd = Volumio('batvolumio')
+    mpd.search(artist)
+    mpd.play_song()
+
 
 
 
