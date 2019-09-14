@@ -47,6 +47,7 @@ def intent_received(hermes, intent_message):
         for song_search in ['Song', 'Artist']:
 
           if len(slots_values[song_search]) > 0:
+            print(slots_values[song_search])
             mpd.search(slots_values[song_search])
             song_def = slots_values[song_search]
             break
