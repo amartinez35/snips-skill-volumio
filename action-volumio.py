@@ -23,31 +23,25 @@ def intent_received(hermes, intent_message):
   if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action':
     available_slots = intent_message.slots
     slots_values = {}
+    message = ''
 
     for slot in slots_list:
-      print(slot)
-      print(available_slots[slot])
+      if len(available_slots[slot]) > 0:
+        slots_values[slot] = available_slots[slot].first().value
 
 
-    artist = intent_message.slots.Artist.first().value or available_slots['Artist']
-    # song = intent_message.slots.Song.first().value or available_slots['Song']
-    # album = intent_message.slots.Album.first().value or available_slots['Album']
-    piece = intent_message.slots.Piece.first().value or available_slots['Piece']
-    action = intent_message.slots.VolumioAction.first().value or available_slots['VolumioAction']
-
-    message = ''
-    if not action:
-      message = 'Je n\' pas compris'
+    if len(slots_values['VolumioAction']) == 0:
+      message = 'Je n\' pas compris la demande'
     
-    if not piece:
-      piece = '192.168.0.25'
+    if len(slots_values['Piece']) == 0:
+      slots_values['Piece'] = '192.168.0.25'
 
     
-    mpd = Volumio(piece)
-    mpd.search(artist)
+    mpd = Volumio(slots_values['Piece'])
+    mpd.search(slots_values['Artist'])
     mpd.play_song()
 
-    hermes.publish_end_session(intent_message.session_id, 'J\'ai mis {}'.format(artist))
+    hermes.publish_end_session(intent_message.session_id, message)
 
 
 with Hermes(MQTT_ADDR) as h:
