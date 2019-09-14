@@ -50,7 +50,6 @@ class Volumio:
             time.sleep(0.7)
 
     def search(self, query):
-        print(query)
         self.socketIO.on('pushBrowseLibrary', self.__on_search_response)
         self.socketIO.emit('search', {'value': query}, self.__on_search_response)
         self.socketIO.wait_for_callbacks(seconds=1)

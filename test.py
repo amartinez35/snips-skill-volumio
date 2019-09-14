@@ -4,6 +4,6 @@ mpd = Volumio('batvolumio')
 
 #mpd.set_volume(17)
 
-mpd.search('beatles')
+mpd.search('Elton John')
 mpd.play_song()
 #mpd.pause_song()

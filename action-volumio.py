@@ -12,7 +12,7 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 def intent_received(hermes, intent_message):
 
-  if intent_message.intent.intent_name == 'amartinez35:volumio':
+  if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action' :
     print(intent_message)
 
 
