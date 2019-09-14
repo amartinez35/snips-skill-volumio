@@ -39,14 +39,15 @@ def intent_received(hermes, intent_message):
     else:
       mpd = Volumio(slots_values['Piece'])
       if slots_values['VolumioAction'] == 'demarre':
+        
+        for song_search in ['Song', 'Album', 'Artist']:
+
+          if len(slots_values[song_search]) == 0:
+            mpd.search(slots_values[song_search])
+            break
+
         message = 'Je lance la lecture'
         mpd.play_song()
-
-
-    
-    # mpd = Volumio(slots_values['Piece'])
-    # mpd.search(slots_values['Artist'])
-    # mpd.play_song()
 
     hermes.publish_end_session(intent_message.session_id, message)
 
