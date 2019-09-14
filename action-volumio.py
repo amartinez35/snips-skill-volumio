@@ -9,15 +9,28 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
+slots_list = [
+  'Artist',
+  'Song',
+  'Album',
+  'Piece',
+  'VolumioAction'
+]
+
 
 def intent_received(hermes, intent_message):
 
   if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action':
     available_slots = intent_message.slots
+    slots_values = {}
+
+    for slot in slots_list:
+      print(slots_values[slot])
+
 
     artist = intent_message.slots.Artist.first().value or available_slots['Artist']
-    song = intent_message.slots.Song.first().value or available_slots['Song']
-    album = intent_message.slots.Album.first().value or available_slots['Album']
+    # song = intent_message.slots.Song.first().value or available_slots['Song']
+    # album = intent_message.slots.Album.first().value or available_slots['Album']
     piece = intent_message.slots.Piece.first().value or available_slots['Piece']
     action = intent_message.slots.VolumioAction.first().value or available_slots['VolumioAction']
 
