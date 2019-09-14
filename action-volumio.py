@@ -4,6 +4,7 @@
 from hermes_python.hermes import Hermes
 from Volumio import Volumio
 import requests
+import time
 
 MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
@@ -47,6 +48,7 @@ def intent_received(hermes, intent_message):
             break
 
         message = 'Je lance la lecture'
+        time.sleep(1)
         mpd.play_song()
 
     hermes.publish_end_session(intent_message.session_id, message)
