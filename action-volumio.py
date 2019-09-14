@@ -25,7 +25,8 @@ def intent_received(hermes, intent_message):
     slots_values = {}
 
     for slot in slots_list:
-      print(slots_values[slot])
+      print(slot)
+      print(available_slots[slot])
 
 
     artist = intent_message.slots.Artist.first().value or available_slots['Artist']
