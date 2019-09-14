@@ -38,7 +38,9 @@ def intent_received(hermes, intent_message):
       message = 'Je n\' pas compris la demande'
     else:
       mpd = Volumio(slots_values['Piece'])
-      if slots_values['VolumioAction'] == 'demarre':
+      action = slots_values['VolumioAction']
+      print(action)
+      if action == 'demarre':
 
         song_def = ''
         
@@ -55,7 +57,7 @@ def intent_received(hermes, intent_message):
         print(state)
         message = 'Je lance la lecture {}'.format(song_def)
       
-      if slots_values['VolumioAction'] == 'arrete':
+      if action == 'arrete':
         mpd.pause_song()
         message = 'J\'ai mis la musique en pause'
 
