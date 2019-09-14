@@ -4,6 +4,7 @@
 from hermes_python.hermes import Hermes
 from Volumio import Volumio
 import requests
+import json
 
 
 MQTT_IP_ADDR = "localhost"
@@ -13,12 +14,24 @@ MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
 def intent_received(hermes, intent_message):
 
-  if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action' :
-    print(intent_message.slots.Artist.first().value)
-    artist = intent_message.slots.Artist.first().value
-    print(intent_message.slots.VolumioAction.first().value)
+  if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action':
+    available_slots = json.loads(intent_message.custom_data)
 
-    mpd = Volumio('192.168.0.25')
+    artist = intent_message.slots.Artist.first().value or available_slots['Artist']
+    song = intent_message.slots.Song.first().value or available_slots['Song']
+    album = intent_message.slots.Album.first().value or available_slots['Album']
+    piece = intent_message.slots.Piece.first().value or available_slots['Piece']
+    action = intent_message.slots.VolumioAction.first().value or available_slots['VolumioAction']
+
+    message = ''
+    if not action:
+      message = 'Je n\' pas compris'
+    
+    if not piece:
+      piece = '192.168.0.25'
+
+    
+    mpd = Volumio(piece)
     mpd.search(artist)
     mpd.play_song()
 
