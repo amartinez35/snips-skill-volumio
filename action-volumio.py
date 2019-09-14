@@ -18,7 +18,7 @@ def intent_received(hermes, intent_message):
     artist = intent_message.slots.Artist.first().value
     print(intent_message.slots.VolumioAction.first().value)
 
-    mpd = Volumio('batvolumio')
+    mpd = Volumio('192.168.0.25')
     mpd.search(artist)
     mpd.play_song()
 
