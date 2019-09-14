@@ -28,6 +28,8 @@ def intent_received(hermes, intent_message):
     for slot in slots_list:
       if len(available_slots[slot]) > 0:
         slots_values[slot] = available_slots[slot].first().value
+      else:
+        slots_values[slot] = ''
 
 
     if len(slots_values['VolumioAction']) == 0:
