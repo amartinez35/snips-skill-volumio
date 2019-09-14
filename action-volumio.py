@@ -46,9 +46,12 @@ def intent_received(hermes, intent_message):
             mpd.search(slots_values[song_search])
             break
 
-        message = 'Je lance la lecture'
         time.sleep(1)
         mpd.play_song()
+        state = mpd.getState()
+        print(state)
+        message = 'Je lance la lecture'
+
 
     hermes.publish_end_session(intent_message.session_id, message)
 
