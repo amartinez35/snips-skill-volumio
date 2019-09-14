@@ -54,6 +54,10 @@ def intent_received(hermes, intent_message):
         state = mpd.getState()
         print(state)
         message = 'Je lance la lecture {}'.format(song_def)
+      
+      if slots_values['VolumioAction'] == 'arrete':
+        mpd.stop_song()
+        message = 'J\'ai mis la musique en pause'
 
 
     hermes.publish_end_session(intent_message.session_id, message)
