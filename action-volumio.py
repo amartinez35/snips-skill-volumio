@@ -17,10 +17,12 @@ slots_list = [
   'VolumioAction'
 ]
 
+intent_list = ['amartinez35:music_action', 'amartinez35:not_music_action']
+
 
 def intent_received(hermes, intent_message):
 
-  if intent_message.intent.intent_name == 'amartinez35:music_action' or intent_message.intent.intent_name == 'amartinez35:not_music_action':
+  if intent_message.intent.intent_name in  intent_list:
     available_slots = intent_message.slots
     slots_values = {}
     message = ''
