@@ -35,7 +35,7 @@ def intent_received(hermes, intent_message):
       slots_values['Piece'] = '192.168.0.25'
 
     if len(slots_values['VolumioAction']) == 0:
-      message = 'Je n\' pas compris la demande'
+      message = 'Je n\'ai pas compris la demande'
     else:
       mpd = Volumio(slots_values['Piece'])
       action = slots_values['VolumioAction']
