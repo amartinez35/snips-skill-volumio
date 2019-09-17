@@ -10,24 +10,24 @@ MQTT_IP_ADDR = "localhost"
 MQTT_PORT = 1883
 MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
 
-slots_list = [
+SLOTS_LIST = [
   'Artist',
   'Song',
   'Piece',
   'VolumioAction'
 ]
 
-intent_list = ['amartinez35:music_action', 'amartinez35:not_music_action']
+INTENTS_LIST = ['amartinez35:music_action', 'amartinez35:not_music_action']
 
 
 def intent_received(hermes, intent_message):
 
-  if intent_message.intent.intent_name in  intent_list:
+  if intent_message.intent.intent_name in INTENTS_LIST:
     available_slots = intent_message.slots
     slots_values = {}
     message = ''
 
-    for slot in slots_list:
+    for slot in SLOTS_LIST:
       if len(available_slots[slot]) > 0:
         slots_values[slot] = available_slots[slot].first().value
       else:
