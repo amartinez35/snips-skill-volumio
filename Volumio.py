@@ -16,9 +16,9 @@ class Volumio:
         search_result = args[0].get('navigation').get('lists')[0].get('items')[0].get('uri')
         print(search_result)
         self.clear_queue()
-        time.sleep(1)
+        time.sleep(0.5)
         self.add_to_queue(search_result)
-        time.sleep(1)
+        time.sleep(0.5)
 
     def __on_getState_response(self, *args):
         print(args[0])
@@ -27,7 +27,7 @@ class Volumio:
         self.playlist_name = playlist
         self.socketIO.on('pushQueue', self.__on_getQueue_response)
         self.socketIO.emit('getQueue', '', self.__on_getQueue_response)
-        self.socketIO.wait_for_callbacks(seconds=1)
+        self.socketIO.wait_for_callbacks(seconds=0.5)
     
     def play_playlist(self):
         self.socketIO.emit('playPlaylist', {'name': self.playlist_name})
@@ -59,7 +59,7 @@ class Volumio:
     def getState(self):
         self.socketIO.on('pushState', self.__on_getState_response)
         self.socketIO.emit('getState', '', self.__on_getState_response)
-        self.socketIO.wait_for_callbacks(seconds=1)
+        self.socketIO.wait_for_callbacks(seconds=0.5)
     
     # def __on_browse_response(self, *args):
     #     print('toto')

@@ -92,7 +92,7 @@ def intent_received(hermes, intent_message):
             song_def = slots_values[song_search]
             break
 
-        time.sleep(1)
+        time.sleep(0.5)
         mpd.play_song()
         #state = mpd.getState()
         #print(state)
