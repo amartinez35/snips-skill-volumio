@@ -4,6 +4,7 @@ import json
 import configparser
 import io
 from hermes_python.hermes import Hermes
+from hermes_python.ffi.utils import MqttOptions
 from Volumio import Volumio
 import requests
 import time
@@ -105,6 +106,8 @@ def intent_received(hermes, intent_message):
 
     hermes.publish_end_session(intent_message.session_id, message)
 
+if __name__ == "__main__":
+    mqtt_opts = MqttOptions()
+    with Hermes(mqtt_options=mqtt_opts) as h:
+        h.subscribe_intents(intent_received).start()
 
-with Hermes(MQTT_ADDR) as h:
-  h.subscribe_intents(intent_received).start()
