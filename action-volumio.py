@@ -69,6 +69,7 @@ def intent_received(hermes, intent_message):
 
   if intent_message.intent.intent_name in INTENTS_LIST:
     slots_values = read_slots(intent_message)
+    message = ''
 
     room = get_room(slots_values['Piece'])
 
