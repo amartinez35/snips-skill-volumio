@@ -93,8 +93,9 @@ def intent_received(hermes, intent_message):
 
         time.sleep(1)
         mpd.play_song()
-        state = mpd.getState()
-        print(state)
+        #state = mpd.getState()
+        #print(state)
+        print(song_def)
         message = 'Je lance la lecture {}'.format(song_def)
       
       if action == 'arrete':
