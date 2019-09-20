@@ -58,8 +58,16 @@ class Volumio:
         self.socketIO.on('pushState', self.__on_getState_response)
         self.socketIO.emit('getState', '', self.__on_getState_response)
         self.socketIO.wait_for_callbacks(seconds=1)
-
     
+    # def __on_browse_response(self, *args):
+    #     print('toto')
+    #     print(args[0])
+
+    # def test(self):
+    #     self.socketIO.on('pushBrowseLibrary', self.__on_browse_response)
+    #     self.socketIO.emit('browseLibrary', {'uri': 'music-library/NAS/Decouverte_I'}, self.__on_browse_response)
+    #     self.socketIO.wait_for_callbacks(seconds=1)
+
     def next_song(self):
         self.socketIO.emit('next')
     
