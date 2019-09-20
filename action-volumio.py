@@ -96,7 +96,7 @@ def intent_received(hermes, intent_message):
         mpd.play_song()
         #state = mpd.getState()
         #print(state)
-        print(song_def)
+        #print(song_def)
         message = 'Je lance la lecture {}'.format(song_def)
       
       if action == 'arrete':
@@ -106,7 +106,7 @@ def intent_received(hermes, intent_message):
 
     hermes.publish_end_session(intent_message.session_id, message)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
         h.subscribe_intents(intent_received).start()

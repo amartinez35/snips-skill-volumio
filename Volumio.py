@@ -18,6 +18,7 @@ class Volumio:
         self.clear_queue()
         time.sleep(1)
         self.add_to_queue(search_result)
+        time.sleep(1)
 
     def __on_getState_response(self, *args):
         print(args[0])
