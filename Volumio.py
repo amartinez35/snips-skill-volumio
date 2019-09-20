@@ -82,6 +82,7 @@ class Volumio:
     
     def play_song(self):
         self.socketIO.emit('play')
+        return
     
     def clear_queue(self):
         self.socketIO.emit('clearQueue')
