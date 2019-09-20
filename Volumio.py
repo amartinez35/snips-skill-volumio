@@ -16,6 +16,7 @@ class Volumio:
         search_result = args[0].get('navigation').get('lists')[0].get('items')[0].get('uri')
         print(search_result)
         self.clear_queue()
+        time.sleep(1)
         self.add_to_queue(search_result)
 
     def __on_getState_response(self, *args):
