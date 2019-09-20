@@ -79,7 +79,7 @@ def intent_received(hermes, intent_message):
       mpd = Volumio(room)
       action = slots_values['VolumioAction']
       print(action)
-      if action == 'demarre':
+      if action == 'Démarre':
 
         song_def = ''
         
