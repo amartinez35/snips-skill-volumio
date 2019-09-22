@@ -35,10 +35,9 @@ def read_configuration_file():
         return dict()
 
 def get_room(intent_message):
-  print(intent_message.slots.Room)
   room = 'salon' if len(intent_message.slots.Room) == 0 else intent_message.slots.Room.first().value
-  print(CONFIG)
-  print(room)
+  return CONFIG['secret'].get(room)
+
 
 def intent_paly_music(hermes, intent_message):
   message = ''
