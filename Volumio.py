@@ -1,5 +1,6 @@
 import subprocess
 import time
+import json
 # pour la communication avec volumio
 from socketIO_client import SocketIO, LoggingNamespace, BaseNamespace
 
@@ -42,6 +43,10 @@ class Volumio:
         if volume > 0 or volume <100:
           self.socketIO.emit('volume', volume)
     
+    def add_volume(self, volume):
+        old_volume = self.get_State(self)
+        self.set_volume(self, volume + json.loads(old_volume)['volume'])
+
     def add_to_playlist(self, song):
         uri = song['uri']
         self.socketIO.emit('addToPlaylist', {'name': self.playlist_name, 'service': song['service'], 'uri': uri})
@@ -56,7 +61,7 @@ class Volumio:
         self.socketIO.emit('search', {'value': query}, self.__on_search_response)
         self.socketIO.wait_for_callbacks(seconds=1)
 
-    def getState(self):
+    def get_State(self):
         self.socketIO.on('pushState', self.__on_getState_response)
         self.socketIO.emit('getState', '', self.__on_getState_response)
         self.socketIO.wait_for_callbacks(seconds=0.5)

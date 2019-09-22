@@ -11,6 +11,7 @@ import time
 
 INTENT_PLAY = 'amartinez35:play_music'
 INTENT_STOP = 'amartinez35:stop_music'
+INTENT_VOLUME = 'amartinez35:volume'
 
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
@@ -53,7 +54,7 @@ def intent_paly_music(hermes, intent_message):
   artist = get_artist()
   if len(artist) > 0:
     mpd.search(artist)
-  print(artist)
+
   mpd.play_song()
   message = 'J\'ai lancé la lecture dans {}'.format(room)
   hermes.publish_end_session(intent_message.session_id, message)
@@ -67,11 +68,29 @@ def intent_stop_music(hermes, intent_message):
   hermes.publish_end_session(intent_message.session_id, message)
   return True
 
+def intent_volume(hermes, intent_message):
+  adress, room, mpd  = connect_volumio(intent_message)
+  action = '' if len(intent_message.slots.ActionVolume) == 0 else intent_message.slots.ActionVolume.first().value
+  volume = CONFIG['global'].get('VolumeUpDown') if len(intent_message.slots.Volume) == 0 else intent_message.slots.Volume.first().value
+  signe = 1
+
+  if action == 'baisse':
+    signe = -1
+  
+  if len(action) == 0:
+    mpd.add_volume(volume)
+  else:
+    mpd.set_volume(signe * volume)
+  
+  hermes.publish_end_session(intent_message.session_id, '')
+  return True
+
 if __name__ == '__main__':
     CONFIG = read_configuration_file()
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
         h.subscribe_intent(INTENT_PLAY, intent_paly_music) \
          .subscribe_intent(INTENT_STOP, intent_stop_music) \
+         .subscribe_intent(INTENT_VOLUME, intent_volume) \
          .loop_forever()
 
