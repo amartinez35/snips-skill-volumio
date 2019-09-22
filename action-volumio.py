@@ -35,7 +35,8 @@ def read_configuration_file():
         return dict()
 
 def get_room(intent_message):
-  room = (intent_message.slots.Piece.first().value, 'salon')[len(intent_message.slots.Piece) == 0]
+  print(intent_message.slots.Room)
+  room = (intent_message.slots.Room.first().value, 'salon')[len(intent_message.slots.Room) == 0]
   print(CONFIG)
   print(room)
 
