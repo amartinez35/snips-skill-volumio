@@ -51,7 +51,7 @@ def intent_stop_music(hermes, intent_message):
 if __name__ == '__main__':
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intents(INTENT_PLAY, intent_paly_music) \
-         .subscribe_intents(INTENT_STOP, intent_stop_music) \
+        h.subscribe_intent(INTENT_PLAY, intent_paly_music) \
+         .subscribe_intent(INTENT_STOP, intent_stop_music) \
          .loop_forever()
 
