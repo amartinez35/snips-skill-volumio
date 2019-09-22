@@ -53,7 +53,7 @@ def intent_paly_music(hermes, intent_message):
   artist = get_artist()
   if len(artist) > 0:
     mpd.search(artist)
-  
+  print(artist)
   mpd.play_song()
   message = 'J\'ai lancé la lecture dans {}'.format(room)
   hermes.publish_end_session(intent_message.session_id, message)
