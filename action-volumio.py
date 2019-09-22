@@ -38,15 +38,29 @@ def get_room(intent_message):
   room = 'salon' if len(intent_message.slots.Room) == 0 else intent_message.slots.Room.first().value
   return CONFIG['secret'].get(room), room
 
+def get_artist(intent_message):
+  artist = '' if len(intent_message.slots.Artist) == 0 else intent_message.slots.Artist.first().value
+  return artist
+
+def connect_volumio(intent_message):
+  address, room = get_room(intent_message)
+  mpd = Volumio(address)  
+  return address, room, mpd
+
 
 def intent_paly_music(hermes, intent_message):
-  message = ''
+  adress, room, mpd  = connect_volumio(intent_message)
+  artist = get_artist()
+  if len(artist) > 0:
+    mpd.search(artist)
+  
+  mpd.play_song()
+  message = 'J\'ai lancé la lecture dans {}'.format(room)
   hermes.publish_end_session(intent_message.session_id, message)
   return True
 
 def intent_stop_music(hermes, intent_message):
-  address, room = get_room(intent_message)
-  mpd = Volumio(address)
+  adress, room, mpd  = connect_volumio(intent_message)
   mpd.stop_song()
 
   message = 'J\'ai mis la musique en pause dans {}'.format(room)
