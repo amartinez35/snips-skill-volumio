@@ -45,6 +45,7 @@ def intent_paly_music(hermes, intent_message):
 
 def intent_stop_music(hermes, intent_message):
   message = 'J\'ai mis la musique en pause'
+  get_room()
   hermes.publish_end_session(intent_message.session_id, message)
   return True
 
