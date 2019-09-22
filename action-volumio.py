@@ -36,7 +36,7 @@ def read_configuration_file():
 
 def get_room(intent_message):
   room = 'salon' if len(intent_message.slots.Room) == 0 else intent_message.slots.Room.first().value
-  return CONFIG['secret'].get(room)
+  return CONFIG['secret'].get(room), room
 
 
 def intent_paly_music(hermes, intent_message):
@@ -45,8 +45,8 @@ def intent_paly_music(hermes, intent_message):
   return True
 
 def intent_stop_music(hermes, intent_message):
-  room = get_room(intent_message)
-  mpd = Volumio(room)
+  address, room = get_room(intent_message)
+  mpd = Volumio(address)
   mpd.stop_song()
 
   message = 'J\'ai mis la musique en pause dans {}'.format(room)
