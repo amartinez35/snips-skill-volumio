@@ -36,6 +36,7 @@ def read_configuration_file():
 
 def get_room(intent_message):
   room = (intent_message.slots.Piece.first().value, 'salon')[len(intent_message.slots.Piece) == 0]
+  print(CONFIG)
   print(room)
 
 def intent_paly_music(hermes, intent_message):
@@ -50,7 +51,7 @@ def intent_stop_music(hermes, intent_message):
   return True
 
 if __name__ == '__main__':
-    CONFIG = read_configuration_file('config.ini')
+    CONFIG = read_configuration_file()
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
         h.subscribe_intent(INTENT_PLAY, intent_paly_music) \
