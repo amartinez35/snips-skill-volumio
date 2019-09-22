@@ -9,8 +9,8 @@ from Volumio import Volumio
 import requests
 import time
 
-INTENT_PLAY = 'play_music'
-INTENT_STOP = 'stop_music'
+INTENT_PLAY = 'amartinez35:play_music'
+INTENT_STOP = 'amartinez35:stop_music'
 
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
