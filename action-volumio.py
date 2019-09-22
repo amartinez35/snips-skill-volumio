@@ -9,19 +9,8 @@ from Volumio import Volumio
 import requests
 import time
 
-MQTT_IP_ADDR = "localhost"
-MQTT_PORT = 1883
-MQTT_ADDR = "{}:{}".format(MQTT_IP_ADDR, str(MQTT_PORT))
-
-SLOTS_LIST = [
-  'Artist',
-  'Song',
-  'Piece',
-  'VolumioAction'
-]
-
-INTENTS_LIST = ['amartinez35:music_action', 'amartinez35:not_music_action']
-
+INTENT_PLAY = 'play_music'
+INTENT_STOP = 'stop_music'
 
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
@@ -33,12 +22,11 @@ class SnipsConfigParser(configparser.SafeConfigParser):
             for section in self.sections()
         }
 
-
 def read_configuration_file():
     try:
         with io.open(
-            "config.ini",
-            encoding="utf-8"
+            'config.ini',
+            encoding = 'utf-8'
         ) as f:
             conf_parser = SnipsConfigParser()
             conf_parser.readfp(f)
@@ -46,68 +34,24 @@ def read_configuration_file():
     except (IOError, configparser.Error):
         return dict()
 
-def get_room(room):
-  config = read_configuration_file()
-  if len(room) == 0:
-    return config['secret']['salon']
-  return room
-
-def read_slots(intent_message):
-  available_slots = intent_message.slots
-  slots_values = {}
-
-  for slot in SLOTS_LIST:
-    if len(available_slots[slot]) > 0:
-      slots_values[slot] = available_slots[slot].first().value
-    else:
-      slots_values[slot] = '' 
+def get_room(intent_message):
+  print(intent_message.slots.Piece)
   
-  return slots_values
 
+def intent_paly_music(hermes, intent_message):
+  message = ''
+  hermes.publish_end_session(intent_message.session_id, message)
+  return True
 
-
-def intent_received(hermes, intent_message):
-
-  if intent_message.intent.intent_name in INTENTS_LIST:
-    slots_values = read_slots(intent_message)
-    message = ''
-
-    room = get_room(slots_values['Piece'])
-
-    if len(slots_values['VolumioAction']) == 0:
-      message = 'Je n\'ai pas compris la demande'
-    else:
-      mpd = Volumio(room)
-      action = slots_values['VolumioAction']
-      print(action)
-      if action == 'demarre':
-
-        song_def = ''
-        
-        for song_search in ['Song', 'Artist']:
-
-          if len(slots_values[song_search]) > 0:
-            print(slots_values[song_search])
-            mpd.search(slots_values[song_search])
-            song_def = slots_values[song_search]
-            break
-
-        time.sleep(0.5)
-        mpd.play_song()
-        #state = mpd.getState()
-        #print(state)
-        #print(song_def)
-        message = 'Je lance la lecture {}'.format(song_def)
-      
-      if action == 'arrete':
-        mpd.pause_song()
-        message = 'J\'ai mis la musique en pause'
-
-
-    hermes.publish_end_session(intent_message.session_id, message)
+def intent_stop_music(hermes, intent_message):
+  message = 'J\'ai mis la musique en pause'
+  hermes.publish_end_session(intent_message.session_id, message)
+  return True
 
 if __name__ == '__main__':
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
-        h.subscribe_intents(intent_received).start()
+        h.subscribe_intents(INTENT_PLAY, intent_paly_music) \
+         .subscribe_intents(INTENT_STOP, intent_stop_music) \
+         .loop_forever()
 
