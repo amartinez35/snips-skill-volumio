@@ -46,8 +46,11 @@ def intent_paly_music(hermes, intent_message):
   return True
 
 def intent_stop_music(hermes, intent_message):
-  message = 'J\'ai mis la musique en pause'
-  get_room(intent_message)
+  room = get_room(intent_message)
+  mpd = Volumio(room)
+  mpd.stop_song()
+
+  message = 'J\'ai mis la musique en pause dans {}'.format(room)
   hermes.publish_end_session(intent_message.session_id, message)
   return True
 
