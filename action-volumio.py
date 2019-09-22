@@ -50,7 +50,7 @@ def intent_stop_music(hermes, intent_message):
   return True
 
 if __name__ == '__main__':
-    config = SnipsConfigParser.read_configuration_file('config.ini')
+    CONFIG = read_configuration_file('config.ini')
     mqtt_opts = MqttOptions()
     with Hermes(mqtt_options=mqtt_opts) as h:
         h.subscribe_intent(INTENT_PLAY, intent_paly_music) \
